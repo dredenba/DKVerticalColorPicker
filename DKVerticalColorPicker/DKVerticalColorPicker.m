@@ -79,8 +79,6 @@
     CGFloat cbwidth = self.frame.size.width * 0.6;
     for (int y = 0; y < self.frame.size.height; y++)
     {
-
-
         UIColor *theColor = [self getColor:y];
         [theColor set];
         CGRect theColorRect = CGRectMake(cbxbegin, y, cbwidth, 1.0);
@@ -90,8 +88,6 @@
 
 - (UIColor *)getColor:(CGFloat)aY
 {
-//        [[UIColor colorWithHue:(y/self.frame.size.height) saturation:1.0 brightness:1.0 alpha:1.0] set];
-
     CGFloat theMinY = 0;
     CGFloat theMaxY = self.frame.size.height;
 
@@ -175,7 +171,7 @@ CGFloat mapInputToRange(CGFloat input, CGFloat startValue, CGFloat endValue, CGF
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self updateColor:touches];
-    [self notifyDelegate:DKCOLOR_TOUCHES_BEGAN_TYPE];
+    [self notifyDelegate:DKColorPickerTouchTypeTouchesBegan];
     [self setNeedsDisplay];
 }
 
@@ -188,7 +184,7 @@ CGFloat mapInputToRange(CGFloat input, CGFloat startValue, CGFloat endValue, CGF
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self updateColor:touches];
-    [self notifyDelegate:DKCOLOR_TOUCHES_MOVED_TYPE];
+    [self notifyDelegate:DKColorPickerTouchTypeTouchesMoved];
     [self setNeedsDisplay];
 }
 
@@ -196,11 +192,11 @@ CGFloat mapInputToRange(CGFloat input, CGFloat startValue, CGFloat endValue, CGF
 {
     [self updateColor:touches];
 
-    [self notifyDelegate:DKCOLOR_TOUCHES_ENDED_TYPE];
+    [self notifyDelegate:DKColorPickerTouchTypeTouchesEnded];
     [self setNeedsDisplay];
 }
 
-- (void)notifyDelegate:(NSString *)aTouchType
+- (void)notifyDelegate:(DKColorPickerTouchType)aTouchType
 {
     if ([self.delegate respondsToSelector:@selector(colorPicked:withTouchType:)])
     {
