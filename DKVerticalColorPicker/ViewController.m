@@ -27,7 +27,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)colorPicked:(UIColor *)aColor withTouchType:(NSString *)aTouchType
+- (void)colorPicked:(UIColor *)aColor withTouchType:(DKColorPickerTouchType)aTouchType
 {
     self.sampleView.backgroundColor = aColor;
 }
