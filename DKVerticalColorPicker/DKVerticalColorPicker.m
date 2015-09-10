@@ -58,10 +58,35 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    // Drawing code
     [super drawRect:rect];
 
-    //draw wings
+    if (self.shouldDrawWings)
+    {
+        [self drawWings];
+        CGFloat cbxbegin = self.frame.size.width * 0.2f;
+        CGFloat cbwidth = self.frame.size.width * 0.6f;
+
+        [self drawColorBarWithX:cbxbegin andWidth:cbwidth];
+    }
+    else
+    {
+        [self drawColorBarWithX:0 andWidth:CGRectGetWidth(rect)];
+    }
+}
+
+- (void)drawColorBarWithX:(CGFloat)aBeginX andWidth:(CGFloat)aWidth
+{
+    for (int y = 0; y < self.frame.size.height; y++)
+    {
+        UIColor *theColor = [self getColor:y];
+        [theColor set];
+        CGRect theColorRect = CGRectMake(aBeginX, y, aWidth, 1.0);
+        UIRectFill(theColorRect);
+    }
+}
+
+- (void)drawWings
+{
     [[UIColor blackColor] set];
     CGFloat tempYPlace = self.currentSelectionY;
     if (tempYPlace < 0.0)
@@ -73,17 +98,6 @@
     }
     CGRect temp = CGRectMake(0.0, tempYPlace, self.frame.size.width, 1.0);
     UIRectFill(temp);
-
-    //draw central bar over it
-    CGFloat cbxbegin = self.frame.size.width * 0.2f;
-    CGFloat cbwidth = self.frame.size.width * 0.6f;
-    for (int y = 0; y < self.frame.size.height; y++)
-    {
-        UIColor *theColor = [self getColor:y];
-        [theColor set];
-        CGRect theColorRect = CGRectMake(cbxbegin, y, cbwidth, 1.0);
-        UIRectFill(theColorRect);
-    }
 }
 
 
@@ -128,18 +142,18 @@ CGFloat mapInputToRange(CGFloat input, CGFloat startValue, CGFloat endValue, CGF
     return self.frame.size.height;
 }
 
--(CGFloat) getYFromColor: (UIColor *) aColor
+- (CGFloat)getYFromColor:(UIColor *)aColor
 {
     CGFloat hue = 0.0, saturation = 0.0, brightness = 0.0, alpha = 0.0;
     if ([aColor getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha])
     {
-        if( saturation == 0 )
+        if (saturation == 0)
         {
-            return brightness*END_OF_GRAYSCALE_SECTION;
+            return brightness * END_OF_GRAYSCALE_SECTION;
         }
         else
         {
-            return END_OF_WHITE_SECTION + hue*([ self getMaxY] - END_OF_WHITE_SECTION);
+            return END_OF_WHITE_SECTION + hue * ([self getMaxY] - END_OF_WHITE_SECTION);
         }
     }
 
@@ -176,13 +190,13 @@ CGFloat mapInputToRange(CGFloat input, CGFloat startValue, CGFloat endValue, CGF
 {
     if (selectedColor != _selectedColor)
     {
-        self.currentSelectionY = [ self getYFromColor: selectedColor ];
+        self.currentSelectionY = [self getYFromColor:selectedColor];
         [self setNeedsDisplay];
 
         _selectedColor = selectedColor;
         if ([self.delegate respondsToSelector:@selector(colorPicked:withTouchType:)])
         {
-            [self.delegate colorPicked:_selectedColor withTouchType: DKColorPickerTouchTypeTouchesEnded ];
+            [self.delegate colorPicked:_selectedColor withTouchType:DKColorPickerTouchTypeTouchesEnded];
         }
     }
 }
