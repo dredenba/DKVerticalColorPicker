@@ -33,15 +33,36 @@
 
 @implementation DKVerticalColorPicker
 
++(instancetype) colorPickerWithoutWings: (CGRect) aFrame
+{
+    return [[self alloc] initWithFrame: aFrame andWings: NO ];
+}
+
+- (instancetype)initWithFrame:(CGRect)aFrame andWings:(BOOL)aShouldShowWings
+{
+    self = [super initWithFrame: aFrame ];
+    if (self)
+    {
+        self.shouldDrawWings = aShouldShowWings;
+    }
+    return self;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self)
     {
-        self.currentSelectionY = 0.0;
-        self.backgroundColor = [UIColor clearColor];
+        [self setup];
     }
     return self;
+}
+
+- (void)setup
+{
+    self.currentSelectionY = 0.0;
+    self.backgroundColor = [UIColor clearColor];
+    self.shouldDrawWings = YES;
 }
 
 // for when coming out of a nib
@@ -50,8 +71,7 @@
     self = [super initWithCoder:coder];
     if (self)
     {
-        self.currentSelectionY = 0.0;
-        self.backgroundColor = [UIColor clearColor];
+        [self setup];
     }
     return self;
 }

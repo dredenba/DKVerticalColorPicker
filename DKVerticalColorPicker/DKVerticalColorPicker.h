@@ -52,8 +52,13 @@ IB_DESIGNABLE
 @property(nonatomic, weak) IBOutlet id <DKVerticalColorPickerDelegate> delegate;  //set after inited
 @property(nonatomic) IBInspectable UIColor *selectedColor;  //setting this will update the UI & notify the delegate
 
-@property(nonatomic) BOOL shouldDrawWings;
+@property(nonatomic) IBInspectable BOOL shouldDrawWings;
 
 - (UIColor *)getColor:(CGFloat)aY;
+
++ (instancetype)colorPickerWithoutWings:(CGRect)aFrame;
+
+- (id)initWithFrame:(CGRect)aFrame andWings:(BOOL)aShouldShowWings;
+
 -(CGFloat) getYFromColor: (UIColor *) aColor;
 @end
